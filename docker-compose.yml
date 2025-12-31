@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0  # MySQL로 변경!
-    container_name: mysql-user
+    container_name: user-db
     ports:
       - "3306:3306"
     environment:
