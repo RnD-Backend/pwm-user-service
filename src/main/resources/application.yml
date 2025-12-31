@@ -1,0 +1,52 @@
+server:
+  port:8080
+
+spring:
+#  로컬DB 환경
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/user
+#    username: root
+#    password: tofa9705
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  # 도커 환경
+  datasource:
+    #url: jdbc:mysql://localhost:3306/user?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${DB_HOST}:3306/${DB_NAME}?
+    # user DB 계정
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      # DB 테이블 자동 생성 - update(변경된 부분만 반영)
+      # 운영 환경 시 - validate(테이블 검증만 : 생성 X), none(자동 생성 안함)
+      ddl-auto: update
+    show-sql: true
+  # 전역 prefix 설정 - url에 /api 붙게 설정
+  mvc:
+    servlet:
+      path: /api
+
+# swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    # {domain}/api/swagger-ui/index.html
+    path: swagger-ui.html
+    display-request-duration: true
+    doc-expansion: list
+    # CORS (React localhost:3000 허용)
+    web:
+      cors:
+        allowed-origins: [ "http://localhost:3000" ]
+        allowed-methods: [ "GET","POST","PUT","DELETE" ]
+        allowed-headers: [ "*" ]
+        allow-credentials: true
+
+# 로깅 설정
+logging:
+  level:
+    com.example.userservice: DEBUG  # 패키지별 레벨
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
